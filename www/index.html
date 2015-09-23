@@ -1,42 +1,136 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title></title>
+<html ng-app="ionicApp">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <title>test</title>
+  <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="lib/ionic/css/ionic.min.css">
+  <link href="css/test.min.css" rel="stylesheet">
+  <script src="js/test.min.js"></script>
+</head>
+<body> 
+  <!-- 底部选项卡 -->
+  <ion-tabs class="tabs-calm tabs-icon-only tabs-striped">
     
-    <link rel="stylesheet" href="css/test.min.css"/>
-     <!-- <script src="a/js1-ff36e83f04.js"></script> -->
+    <ion-tab title="首页" icon-on="ion-ios-filing" icon-off="ion-ios-filing-outline" ng-controller="homeCtrl">
+      <ion-header-bar class="bar-calm">     
+        <h3 class="title">首页</h3>
+        <button class="button button-dark" ng-click="showEditBtn()">{{editText}}</button> 
+      </ion-header-bar>
+      <ion-content>
+        <ion-refresher
+          pulling-text="下拉刷新..."  
+          on-refresh="doRefresh()">
+        </ion-refresher>
+        <ion-list
+          show-delete="shouldShowDelete"
+          show-reorder="shouldShowReorder"
+          can-swipe="true">
+          <ion-item ng-repeat="item in items">
+            {{item.text}}
+            <ion-option-button class="button-positive"
+                               ng-click="showConfirm(item)">
+              对话框删除
+            </ion-option-button>
+            <ion-option-button class="button-assertive"
+                               ng-click="removeItem(item)">
+              删除
+            </ion-option-button>
+            <ion-delete-button class="ion-minus-circled"
+                               ng-click="items.splice($index, 1)">
+            </ion-delete-button>
+            <ion-reorder-button class="ion-navicon"
+                                on-reorder="reorderItem(item, $fromIndex, $toIndex)">
+            </ion-reorder-button>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-tab>
+    
 
-    <!-- compiled css output -->
-    <link href="css/ionic.app.css" rel="stylesheet">
+    <ion-tab title="关于" icon-on="ion-ios-clock" icon-off="ion-ios-clock-outline" ng-controller="aboutCtrl">
+      <!-- 侧边菜单 -->
+      <ion-side-menus ng-controller="sideMenuCtrl">
+        <!-- 中间内容 -->
+        <ion-side-menu-content>
+          <ion-header-bar class="bar-assertive">
+            <button class="button icon button-clear ion-navicon-round" menu-toggle="left"></button>
+            <h3 class="title">sideMenu</h3>
+          </ion-header-bar>
+          <ion-content>
+            <h2>content</h2>
+            <button class="button button-positive" ng-click="showModal()">模态弹框</button>
+            <button class="button button-balanced" ng-click="showActionSheet()">操作表</button>
+          </ion-content>
+        </ion-side-menu-content>
 
-    <!-- ionic/angularjs js -->
-    <script src="lib/ionic/js/ionic.bundle.js"></script>
+        <!-- 左侧菜单 -->
+        <ion-side-menu side="left">
+          <ion-header-bar class="bar-dark">
+            <h3 class="title">设置</h3>
+            <ion-button class="button-icon icon pull-right ion-gear-b"></ion-button>
+          </ion-header-bar>
+          <ion-content>
+            <ion-list class="inset-list">
+              <ion-item ng-repeat="item in items">{{item.text}}</ion-item>
+            </ion-list>
+          </ion-content>
+        </ion-side-menu>
+      </ion-side-menus>
+      <!-- /侧边菜单 --> 
+    </ion-tab>
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <!-- // <script src="cordova.js"></script> -->
+    <ion-tab title="设置" icon-on="ion-ios-gear" icon-off="ion-ios-gear-outline" ng-controller="settingCtrl">     
+      <ion-view>
+      <ion-scroll zooming="true" direction="xy" style="width: 100%; height: 100%">
+      <ion-header-bar class="bar-dark">
+        <h3 class="title">slideBox</h3>
+      </ion-header-bar>
+      <ion-slide-box does-continue="true" show-pager="true" auto-play="true" pager-click="go(index)">
+            <ion-slide class="box blue balanced-bg">
+              <div class="box assertive-bg">1</div>
+            </ion-slide>
+            <ion-slide class="box pink">
+              <div class="box positive-bg">2</div>
+            </ion-slide>
+            <ion-slide class="box yellow">
+              <div class="box balanced-bg">3</div>
+            </ion-slide>
+      </ion-slide-box>
+       Hello!
+       <button class="button button-calm" ng-click="showLoading()">加载中</button>
+          <button class="button button-calm" ng-click="hideLoading()">加载结束</button>
+          <ion-checkbox ng-model="isChecked">Checkbox Label</ion-checkbox>
+          <ion-checkbox ng-model="isChecked2" class="checkbox-calm">Checkbox Label2</ion-checkbox>
+          <ion-checkbox ng-model="isChecked3">Checkbox Label3</ion-checkbox> 
+          <ion-radio ng-model="choice" ng-value="'A'" class="positive">Choose A</ion-radio>
+          <ion-radio ng-model="choice" ng-value="'B'">Choose B</ion-radio>
+          <ion-radio ng-model="choice" ng-value="'C'">Choose C</ion-radio>
+          <ion-toggle ng-model="airplaneMode" toggle-class="toggle-positive">Airplane Mode</ion-toggle>
+          <ion-toggle ng-model="airplaneMode2" toggle-class="toggle-balanced">Airplane Mode2</ion-toggle>
+      </ion-scroll>
+      </ion-view>
+      
+    </ion-tab>
+  </ion-tabs>
+  
+  <!-- /底部选项卡 -->
+  <script id="my-modal.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar class="bar-positive">
+        <h1 class="title">My Modal title</h1>
+        <button class="ion-close icon button-icon button" ng-click="closeModal()"></button>
+      </ion-header-bar>
+      <ion-content>
+        Hello!
+      </ion-content>
+      <ion-footer-bar>
+        <button class="button button-positive">取消</button>
+        <button class="button button-positive">保存</button>
+      </ion-footer-bar>
+    </ion-modal-view>
+  </script>
 
-    <!-- your app's js -->
-    <script src="js/a.min.js"></script>
-    <!-- // <script src="js/controllers.js"></script> -->
-    <!-- // <script src="js/services.js"></script> -->
-  </head>
-  <body ng-app="starter">
-    <!--
-      The nav bar that will be updated as we navigate between views.
-    -->
-    <div style="background: red; color: #fff; padding: 10px;">hello!</div>
-    <div class="test">你好！</div>
-    <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
-    </ion-nav-bar>
-    <!--
-      The views will be rendered in the <ion-nav-view> directive below
-      Templates are in the /templates folder (but you could also
-      have templates inline in this html file if you'd like).
-    -->
-    <ion-nav-view></ion-nav-view>
-  </body>
+</body>
 </html>

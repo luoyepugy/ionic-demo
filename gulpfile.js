@@ -1,8 +1,8 @@
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var pngquant = require('imagemin-pngquant');
-var spritesmith = require('gulp.spritesmith');
-var browserSync = require('browser-sync').create();
+var gulp = require('gulp'),
+    plugins = require('gulp-load-plugins')(),
+    pngquant = require('imagemin-pngquant'),
+    spritesmith = require('gulp.spritesmith'),
+    browserSync = require('browser-sync').create();
 
 // scss文件对象
 var sassFiles = {
@@ -11,9 +11,8 @@ var sassFiles = {
         dest: "./www/css/"
     }
 };
-
 // css
-gulp.task('scss',function (){
+gulp.task('css',function (){
     return plugins.groupFiles(sassFiles,function (key,fileset){
         return gulp.src(fileset.src)
             .pipe(plugins.sass({
@@ -27,22 +26,27 @@ gulp.task('scss',function (){
             }))
             .pipe(plugins.rename({ suffix: '.min' }))
             .pipe(gulp.dest(fileset.dest))
-            .pipe(browserSync.stream());
+            // .pipe(browserSync.stream());
     })();
 });
 
+
 // js
 gulp.task('js', function() {
-  return gulp.src('./src/js/*.js')
+  return gulp.src('src/js/*.js')
+    .pipe(plugins.jshint('.jshintrc'))
+    .pipe(plugins.jshint.reporter('default'))
+    .pipe(gulp.dest('www/js/'))
     .pipe(plugins.uglify())
     .pipe(plugins.rename({ extname: '.min.js' }))
-    .pipe(gulp.dest('./www/js/'));
+    .pipe(gulp.dest('www/js/'));
 });
-// 等待js任务执行完成，在浏览器加载前
-gulp.task('js-watch', ['js'], browserSync.reload);
+// 等待js任务执行完成，在浏览器加载前，实时刷新
+// gulp.task('js-watch', ['js'], browserSync.reload);
+
 
 // 图片压缩
-gulp.task('imagemin', function () {
+gulp.task('images', function () {
     return gulp.src('./src/img/*')
         .pipe(plugins.imagemin({
             progressive: true,                      //类型：Boolean 默认：false 无损压缩jpg图片
@@ -65,19 +69,45 @@ gulp.task('sprite', function() {
     spriteData.css.pipe(gulp.dest('./www/css/sprite/')); // output path for the CSS
 });
 
+// 清空图片、样式、js
+gulp.task('clean', function() {
+    gulp.src(['www/css/', 'www/js/', 'www/img/'], {read: false})
+        .pipe(plugins.clean());
+});
+
+// 默认任务 清空图片、样式、js并重建 运行语句 gulp
+gulp.task('cleanAll', ['clean'], function(){
+    gulp.start('html','css','images','js');
+});
+
+
 // 监听
-gulp.task('watch',['scss'], function() {
-    browserSync.init({
-        server: "./www"
+gulp.task('watch', function() {
+
+    gulp.watch('src/scss/*.scss', ['css']);
+    gulp.watch('src/js/**/*.js', ['js']);
+
+    var files = [
+      'www/**/*.html',
+      'www/css/**/*.css',
+      'www/img/**/*',
+      'www/js/**/*.js'
+    ];
+
+    browserSync.init(files, {
+      server: {
+         baseDir: './www'
+      }
     });
-    gulp.watch('src/**/*.scss', ['scss']);
-    gulp.watch('src/js/**/*.js', ['js-watch']);
-    gulp.watch("www/**/*.html").on('change', browserSync.reload);
+    
+    // gulp.watch("www/*.html").on('change', browserSync.reload);
 });
 
 // 默认任务
 gulp.task('default', ['watch']);
-gulp.task('img', ['imagemin','sprite']);
+gulp.task('cssprite', ['images','sprite']);
+
+
 
 
 
