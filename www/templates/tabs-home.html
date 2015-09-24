@@ -1,0 +1,41 @@
+<ion-view view-title="首页">
+  <ion-nav-buttons side="left">
+      <button class="button button-dark" ng-click="showEditBtn()">{{editText}}</button> 
+  </ion-nav-buttons>   
+  <ion-nav-buttons side="right">
+      <button class="button icon button-clear ion-navicon-round" menu-toggle="right"></button>
+  </ion-nav-buttons>
+  <ion-content>
+	<ion-refresher
+          pulling-text="下拉刷新..."  
+          on-refresh="doRefresh()">
+        </ion-refresher>
+        <ion-list
+          show-delete="shouldShowDelete"
+          show-reorder="shouldShowReorder"
+          can-swipe="true">
+          <ion-item ng-repeat="item in items">
+            {{item.text}}
+            <ion-option-button class="button-positive"
+                               ng-click="showConfirm(item)">
+              对话框删除
+            </ion-option-button>
+            <ion-option-button class="button-assertive"
+                               ng-click="removeItem(item)">
+              删除
+            </ion-option-button>
+            <ion-delete-button class="ion-minus-circled"
+                               ng-click="items.splice($index, 1)">
+            </ion-delete-button>
+            <ion-reorder-button class="ion-navicon"
+                                on-reorder="reorderItem(item, $fromIndex, $toIndex)">
+            </ion-reorder-button>
+          </ion-item>
+        </ion-list>
+		<!-- <button on-swipe-up="onSwipeUp()" class="button button-clear">加载更多...</button> -->
+        <ion-infinite-scroll
+          on-infinite="loadMore()"
+          distance="1%">
+        </ion-infinite-scroll>
+  </ion-content>
+</ion-view>
