@@ -127,19 +127,28 @@ angular.module('myApp.controllers', [])
     $scope.showActionSheet = function() {
         $ionicBackdrop.retain();
        $ionicActionSheet.show({
-         buttons: [
-           { text: '<b>Share</b> This' },
-           { text: 'Move' }
-         ],
-         destructiveText: 'Delete',
-         titleText: 'Modify your album',
-         cancelText: 'Cancel',
-         cancel: function() {
-            $ionicBackdrop.release();
-         },
-         buttonClicked: function(index) {
-           return true;
-         }
+            titleText: 'ActionSheet Example',
+            buttons: [{
+                text: '<i class="icon ion-share"></i> Share'
+            }, {
+                text: '<i class="icon ion-arrow-move"></i> Move'
+            }, ],
+            destructiveText: 'Delete',
+            cancelText: 'Cancel',
+            cancel: function() {
+                console.log('CANCELLED');
+                $ionicBackdrop.release();
+            },
+            buttonClicked: function(index) {
+                console.log('BUTTON CLICKED', index);
+                $ionicBackdrop.release();
+                return true;
+            },
+            destructiveButtonClicked: function() {
+                console.log('DESTRUCT');
+                $ionicBackdrop.release();
+                return true;
+            }
         });
     };
     $scope.goBack = function() {

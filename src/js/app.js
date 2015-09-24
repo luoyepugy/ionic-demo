@@ -1,8 +1,9 @@
 angular.module('ionicApp', ['ionic','myApp.controllers'])
 
-
-.config(function($stateProvider, $urlRouterProvider) {
-
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  $ionicConfigProvider.views.maxCache(5);
+  // note that you can also chain configs
+  $ionicConfigProvider.tabs.position("bottom");
   $stateProvider.state('tabs', {
       url: "/tabs",
       "abstract": true,
