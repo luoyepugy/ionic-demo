@@ -1,4 +1,4 @@
-angular.module('ionicApp', ['ionic'])
+angular.module('myApp', ['ionic'])
 
 .controller('sideMenuCtrl', ['$scope', function($scope) {
     $scope.items = [];

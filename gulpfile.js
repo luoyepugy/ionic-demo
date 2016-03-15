@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 // scss文件对象
 var sassFiles = {
     "xxx" : {
-        src: "./src/scss/*.scss",
+        src: "./src/scss/**/*.scss",
         dest: "./www/css/"
     }
 };
@@ -24,7 +24,7 @@ gulp.task('css',function (){
                 cascade: false,
                 remove:true
             }))
-            .pipe(plugins.rename({ suffix: '.min' }))
+            // .pipe(plugins.rename({ suffix: '.min' }))
             .pipe(gulp.dest(fileset.dest))
             // .pipe(browserSync.stream());
     })();
@@ -33,13 +33,13 @@ gulp.task('css',function (){
 
 // js
 gulp.task('js', function() {
-  return gulp.src('src/js/*.js')
-    .pipe(plugins.jshint('.jshintrc'))
-    .pipe(plugins.jshint.reporter('default'))
-    .pipe(gulp.dest('www/js/'))
-    .pipe(plugins.uglify())
-    .pipe(plugins.rename({ extname: '.min.js' }))
-    .pipe(gulp.dest('www/js/'));
+  return gulp.src('www/js/*.js')
+    .pipe($.jshint, '.jshintrc')
+    .pipe($.jshint.reporter, 'jshint-stylish');
+    // .pipe(gulp.dest('www/js/'))
+    // .pipe(plugins.uglify())
+    // .pipe(plugins.rename({ extname: '.min.js' }))
+    // .pipe(gulp.dest('www/js/'));
 });
 // 等待js任务执行完成，在浏览器加载前，实时刷新
 // gulp.task('js-watch', ['js'], browserSync.reload);
@@ -75,16 +75,10 @@ gulp.task('clean', function() {
         .pipe(plugins.clean());
 });
 
-// 默认任务 清空图片、样式、js并重建 运行语句 gulp
-gulp.task('cleanAll', ['clean'], function(){
-    gulp.start('html','css','images','js');
-});
-
-
 // 监听
 gulp.task('watch', function() {
 
-    gulp.watch('src/scss/*.scss', ['css']);
+    gulp.watch('src/scss/**/*.scss', ['css']);
     gulp.watch('src/js/**/*.js', ['js']);
 
     var files = [
@@ -96,7 +90,7 @@ gulp.task('watch', function() {
 
     browserSync.init(files, {
       server: {
-         baseDir: './www'
+         baseDir: './www/'
       }
     });
     

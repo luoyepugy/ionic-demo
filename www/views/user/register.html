@@ -1,0 +1,33 @@
+
+<ion-view  view-title="注册">
+    <ion-nav-bar class="bar-calm" align-title="center">
+        <ion-nav-buttons side="left">
+            <button class="button button-clear icon button-icon ion-ios-arrow-left" ng-click="goBack()"></button> 
+        </ion-nav-buttons>       
+    </ion-nav-bar>
+    <ion-content>
+        <div class="icon-center mt20"><i class="ion-person-add calm"></i></div>
+        <ion-list class="list card">
+            <ion-item class="item-input">
+                <input type="number" class="j-input" name="phone" placeholder="用户名"  value="" data-empty="请输入用户名"　/>
+            </ion-item>
+            <ion-item class="item-input">
+                <input type="text" class="j-input" name="code" placeholder="验证码" value="" data-empty="请输入验证码" />
+                <vcode></vcode>
+            </ion-item>
+            <ion-item class="item-input">
+                <input type="text" class="j-input" name="company" placeholder="公司名称" value="" data-empty="请输入公司名称" />
+            </ion-item>
+            <ion-item class="item-input">
+                <input type="password" class="j-input" name="password" placeholder="请输入密码" value="" data-empty="请输入密码" />
+            </ion-item>
+            <ion-item class="item-input">
+                <input type="password" class="j-input" name="confirmPwd" placeholder="请再次输入密码" value="" data-empty="请再次输入密码" />
+            </ion-item>
+            <input type="hidden" name="userType" value="采购商">
+            <ion-item>
+                <button class="button button-full button-calm button-round">注册</button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

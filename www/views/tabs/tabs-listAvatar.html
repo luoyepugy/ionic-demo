@@ -1,0 +1,14 @@
+
+<ion-view view-title="头像列表">
+	<ion-nav-bar class="bar-calm" align-title="center">
+	</ion-nav-bar>
+  	<ion-content>
+    	<div class="list">
+		    <a class="item item-avatar" href="#/tabs/listAvatarDetail" ng-repeat="item in list">
+		      <img ng-src="{{item.avatar}}" alt="头像">
+		      <h2>{{item.title}}</h2>
+		      <p>{{item.content}}</p>
+		    </a>
+		</div>
+  	</ion-content>
+</ion-view>

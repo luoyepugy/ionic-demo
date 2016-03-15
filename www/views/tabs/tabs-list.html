@@ -1,13 +1,13 @@
-<ion-view view-title="首页">
-  <ion-nav-buttons side="left">
-      <button class="button button-dark" ng-click="showEditBtn()">{{editText}}</button> 
-  </ion-nav-buttons>   
-  <ion-nav-buttons side="right">
-      <button class="button icon button-clear ion-navicon-round" menu-toggle="right"></button>
-  </ion-nav-buttons>
+<ion-view view-title="列表">
+  <ion-nav-bar class="bar-calm" align-title="center">
+    <ion-nav-buttons side="left">
+        <button class="button button-dark" ng-click="showEditBtn()">{{editText}}</button> 
+    </ion-nav-buttons> 
+  </ion-nav-bar>  
   <ion-content>
 	<ion-refresher
-          pulling-text="下拉刷新..."  
+          pulling-text="下拉刷新..." 
+          refreshing-text="刷新成功" 
           on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list
@@ -15,8 +15,9 @@
           show-reorder="shouldShowReorder"
           can-swipe="true">
           <ion-item ng-repeat="item in items">
-            {{item.text}}
-            <ion-option-button class="button-positive"
+            <a class="list-a" ui-sref="tabs.listDetail({listId: item.id})"></a>
+            {{item.title}}
+            <ion-option-button class="button-calm"
                                ng-click="showConfirm(item)">
               对话框删除
             </ion-option-button>
@@ -32,9 +33,9 @@
             </ion-reorder-button>
           </ion-item>
         </ion-list>
-		<!-- <button on-swipe-up="onSwipeUp()" class="button button-clear">加载更多...</button> -->
         <ion-infinite-scroll
           on-infinite="loadMore()"
+          immediate-check="false"
           distance="1%">
         </ion-infinite-scroll>
   </ion-content>

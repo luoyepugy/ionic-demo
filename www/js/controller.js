@@ -1,24 +1,41 @@
+
+
+
 angular.module('myApp.controllers', [])
 
 // 左侧菜单
-.controller('sideMenuCtrl', ['$scope', function($scope) {
-    $scope.items = [];
-    for(var i = 0; i < 5; i++) {
-        $scope.items.push({
-            text: 'text' + (i + 1)
-        });
-    }
-}])
-
+.controller('sideMenuCtrl', function($scope, $state) {
+    // $scope.exitAccount = function() {
+    //     $state.go('login');
+    // };
+})
 // 首页
-.controller('homeCtrl', function($scope, $ionicPopup, $timeout, $http, $ionicLoading) {
+.controller('homeCtrl', function($scope, $ionicSlideBoxDelegate, $state) {
+    $scope.go = function(index) {
+         $ionicSlideBoxDelegate.slide(index);
+    }
+    $scope.slideHasChanged = function(index) {
+        if(index === 2) {
+            $state.go('login');
+        }
+    };
+})
+
+.controller('registerCtrl', function($scope, $ionicNavBarDelegate) {
+    $scope.goBack = function() {
+        $ionicNavBarDelegate.back();
+    };
+})
+
+// 列表页面
+.controller('listCtrl', function($scope, $ionicPopup, $timeout, $http, $ionicLoading) {
     $scope.items = [];
     // 预加载
     $ionicLoading.show({
         template: '<ion-spinner></ion-spinner><h3>加载中...</h3>',
         duration: 3000
     });
-    $http.get('indexItems.json')
+    $http.get('./json/indexItems.json')
         .success(function(data) {
             $scope.items = data.datas;
     })
@@ -38,9 +55,10 @@ angular.module('myApp.controllers', [])
     $scope.doRefresh = function() {
         // 从指定路径获取数据
         $timeout( function() {  
-            $http.get('newItems.json')
+            $http.get('./json/newItems.json')
                 .success(function(data) {
                     $scope.items = data.datas;
+                    $scope.$broadcast('scroll.refreshComplete');
             })
             .error(function(data){
                 console.log('error');
@@ -51,7 +69,7 @@ angular.module('myApp.controllers', [])
     // 加载更多
     $scope.loadMore = function() {
         // 从指定路径获取数据
-        $http.get('moreItems.json').success(function(data) {
+        $http.get('./json/moreItems.json').success(function(data) {
             for(var i = 0; i < data.datas.length; i++) {
                 $scope.items.push(data.datas[i]);
             }
@@ -106,8 +124,29 @@ angular.module('myApp.controllers', [])
     };
 })
 
-// 关于
-.controller('aboutCtrl',function($scope, $ionicModal, $ionicActionSheet, $ionicBackdrop, $ionicNavBarDelegate) {
+// 头像列表页面
+.controller('listAvatarCtrl',function($scope, $ionicModal, $http, $ionicLoading) {
+    $scope.list = [];
+    // 预加载
+    $ionicLoading.show({
+        template: '<ion-spinner></ion-spinner><h3>加载中...</h3>',
+        duration: 3000
+    });
+    $http.get('./json/indexItems.json')
+        .success(function(data) {
+            $scope.list = data.datas;
+    })
+    .error(function(data){
+      $ionicPopup.alert({
+        title: '加载错误!',
+        template: '',
+        okText: "确定",
+        okType: "button-calm"
+      });
+    })
+    .finally(function() {
+        $ionicLoading.hide();
+    });
 
     // 模态弹窗
     $ionicModal.fromTemplateUrl('my-modal.html', {
@@ -121,20 +160,25 @@ angular.module('myApp.controllers', [])
     };
     $scope.closeModal = function() {
         $scope.modal.hide();
-    };
+    };  
+    
+})
+
+// 个人中心
+.controller('changeProfileCtrl', function($scope, $ionicActionSheet, $ionicBackdrop) {
 
     // 操作表
     $scope.showActionSheet = function() {
         $ionicBackdrop.retain();
-       $ionicActionSheet.show({
-            titleText: 'ActionSheet Example',
+        $ionicActionSheet.show({
+            // titleText: 'ActionSheet Example',
             buttons: [{
-                text: '<i class="icon ion-share"></i> Share'
+                text: '<i class="icon ion-ios-camera"></i>拍照'
             }, {
-                text: '<i class="icon ion-arrow-move"></i> Move'
+                text: '<i class="icon ion-ios-photos"></i>从图库选择'
             }, ],
-            destructiveText: 'Delete',
-            cancelText: 'Cancel',
+            // destructiveText: '删除',
+            cancelText: '取消',
             cancel: function() {
                 console.log('CANCELLED');
                 $ionicBackdrop.release();
@@ -151,32 +195,6 @@ angular.module('myApp.controllers', [])
             }
         });
     };
-    $scope.goBack = function() {
-        $ionicNavBarDelegate.back();
-    };
-})
-
-// 设置
-.controller('settingCtrl', function($scope, $ionicLoading, $ionicSlideBoxDelegate) {
-    $scope.showLoading = function() {
-        $ionicLoading.show({
-          template: '<ion-spinner></ion-spinner><h3>加载中...</h3>',
-          duration: 3000
-        });
-    };
-
-    $scope.hideLoding = function(){
-        $ionicLoading.hide();
-    };
-
-    $scope.go = function(index) {
-        $ionicSlideBoxDelegate.slide(index);
-    };
 
 })
-
-
-.controller('about2Ctrl', function($scope,$stateParams) {
-    $scope.title='about2Ctrl';
-});
 

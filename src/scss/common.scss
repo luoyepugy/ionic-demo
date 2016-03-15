@@ -1,0 +1,58 @@
+@import 'custom/custom.scss';
+@import 'custom/mixin.scss';
+
+
+// 圆角按钮
+.button-round {
+  border-radius: 30px;
+}
+.button-round-space {
+  @extend .button-round;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+// 列表
+.list {
+  display: block;
+  // readonly背景色
+  input[readonly]:not(.cloned-text-input) {
+    background: #fff;
+  }
+}
+
+// 背景
+.scroll-content {
+	background: #eee;
+}
+
+// 图标
+.icon-center {
+  border-radius: 40px;
+  overflow: hidden;
+  background-color: #fff;
+  font-size: 3.5em;
+  @include inside-center(80px);
+  @include outside-center();
+}
+
+// border
+.bar-calm .button {
+	border-color: #11c1f3;
+}
+
+
+// list-a列表页面a标签
+.list-a {
+	@include position();
+	@include size(100%, 50px);
+}
+
+// 首页banner图
+.home-img {
+  width: 100%;
+  height: 100%;
+  img {
+    width: 100%;
+  }
+}

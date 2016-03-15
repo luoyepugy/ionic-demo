@@ -1,0 +1,53 @@
+<!-- 侧边菜单 -->
+<!-- <ion-side-menus ng-controller="sideMenuCtrl"> -->
+<!-- 中间内容 -->
+<!-- <ion-side-menu-content> -->
+<ion-view>
+    <!-- <ion-nav-bar class="bar-calm" align-title="center"> -->
+<!--       <ion-nav-back-button class="button-icon ion-ios-arrow-left">
+      </ion-nav-back-button>
+      <ion-nav-buttons side="right">
+        <button class="button icon button-clear ion-navicon-round" menu-toggle="right"></button>
+      </ion-nav-buttons> -->
+    <!-- </ion-nav-bar> -->
+    <ion-nav-bar class="bar-calm" align-title="center">
+      <ion-nav-back-button class="button-icon ion-ios-arrow-left">
+      </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-tabs class="tabs-icon-top tabs-calm">
+
+        <!-- list Tab -->
+        <ion-tab title="列表" icon-on="ion-ios-list" icon-off="ion-ios-list-outline"  href="#/tabs/list">
+            <ion-nav-view name="tabs-list"></ion-nav-view>
+        </ion-tab>
+
+        <!-- about Tab -->
+        <ion-tab title="头像列表" icon-on="ion-ios-clock" icon-off="ion-ios-clock-outline"  href="#/tabs/listAvatar"> 
+            <ion-nav-view  name="tabs-listAvatar"></ion-nav-view>
+        </ion-tab>
+
+        <!-- setting Tab -->
+        <ion-tab title="个人中心" icon-on="ion-ios-person" icon-off="ion-ios-person-outline" href="#/tabs/user">
+            <ion-nav-view name="tabs-user"></ion-nav-view>
+        </ion-tab>
+        
+
+    </ion-tabs>
+</ion-view>
+<!-- </ion-side-menu-content> -->
+
+  <!-- 左侧菜单 -->
+<!--   <ion-side-menu side="right">
+    <ion-header-bar class="bar-dark" align-title="center">
+      <h3 class="title">设置</h3>
+      <ion-button class="button-icon icon pull-right ion-gear-b"></ion-button>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list class="inset-list">
+        <a menu-close href="#/login" class="item">退出当前账号</a>
+        <a menu-close href="#/home" class="item">首页</a>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+
+</ion-side-menus>
