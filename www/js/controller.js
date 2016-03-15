@@ -3,12 +3,6 @@
 
 angular.module('myApp.controllers', [])
 
-// 左侧菜单
-.controller('sideMenuCtrl', function($scope, $state) {
-    // $scope.exitAccount = function() {
-    //     $state.go('login');
-    // };
-})
 // 首页
 .controller('homeCtrl', function($scope, $ionicSlideBoxDelegate, $state) {
     $scope.go = function(index) {
@@ -146,21 +140,7 @@ angular.module('myApp.controllers', [])
     })
     .finally(function() {
         $ionicLoading.hide();
-    });
-
-    // 模态弹窗
-    $ionicModal.fromTemplateUrl('my-modal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    });
-    $scope.showModal = function() {
-        $scope.modal.show();
-    };
-    $scope.closeModal = function() {
-        $scope.modal.hide();
-    };  
+    }); 
     
 })
 
